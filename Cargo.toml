@@ -1,0 +1,11 @@
+[package]
+name = "tape"
+version = "0.1.0"
+authors = ["micah"]
+
+[dependencies]
+vst2 = "0.0.1"
+
+[lib]
+name = "tape"
+crate-type = ["dylib"]
