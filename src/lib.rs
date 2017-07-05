@@ -1,7 +1,11 @@
 #[macro_use] extern crate vst2;
+extern crate libc;
 
 use vst2::buffer::AudioBuffer;
 use vst2::plugin::{Plugin, Info};
+use vst2::editor::Editor;
+
+use libc::c_void;
 
 struct TapeSaturation {
     a: f32,
@@ -11,6 +15,8 @@ struct TapeSaturation {
     input_r_prev: f32,
     output_l_prev: f32,
     output_r_prev: f32,
+
+    editor: TapeSaturationEditor,
 }
 
 impl Default for TapeSaturation {
@@ -23,6 +29,8 @@ impl Default for TapeSaturation {
             input_r_prev: 0.0,
             output_l_prev: 0.0,
             output_r_prev: 0.0,
+
+            editor: Default::default()
         }
     }
 }
@@ -110,6 +118,41 @@ impl Plugin for TapeSaturation {
             self.input_r_prev = *input_r;
             self.output_r_prev = *output_r;
         }
+    }
+
+    fn get_editor(&mut self) -> Option<&mut Editor> {
+        Some(&mut self.editor)
+    }
+}
+
+struct TapeSaturationEditor {
+    is_open: bool,
+}
+
+impl Default for TapeSaturationEditor {
+    fn default() -> TapeSaturationEditor {
+        TapeSaturationEditor {
+            is_open: false,
+        }
+    }
+}
+
+impl Editor for TapeSaturationEditor {
+    fn size(&self) -> (i32, i32) {
+        (320, 240)
+    }
+
+    fn position(&self) -> (i32, i32) {
+        (100, 100)
+    }
+
+    fn open(&mut self, window: *mut c_void) {
+
+        self.is_open = true;
+    }
+
+    fn is_open(&mut self) -> bool {
+        self.is_open
     }
 }
 

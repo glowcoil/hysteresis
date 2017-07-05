@@ -5,6 +5,8 @@ authors = ["micah"]
 
 [dependencies]
 vst2 = "0.0.1"
+sdl2 = "0.30.0"
+libc = "*"
 
 [lib]
 name = "tape"
