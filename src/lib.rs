@@ -93,7 +93,7 @@ impl Plugin for TapeSaturation {
     fn process(&mut self, buffer: AudioBuffer<f32>) {
         fn update(output_prev: f32, input_prev: f32, input: f32, a: f32, b: f32) -> f32 {
             let delta_input = input - input_prev;
-            output_prev + a * ((input * 2.0).tanh() - output_prev) * delta_input.abs() + b * delta_input / (input * 2.0).cosh().powi(2)
+            (output_prev + a * ((input * 2.0).tanh() - output_prev) * delta_input.abs() + b * delta_input / (input * 2.0).cosh().powi(2)).tanh()
         }
 
         let (inputs, mut outputs) = buffer.split();
